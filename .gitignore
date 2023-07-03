@@ -1,0 +1,11 @@
+Contracts/node_modules
+.env
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat files
+Contracts/cache
+Contracts/artifacts
+
