@@ -138,6 +138,10 @@ abstract contract FundToken is ERC20, AccessControlEnumerable {
  
   }
 
+  function getFundAdmin() public view returns(address){
+    return FUND_ADMIN;
+  }
+
   // ****** Fund Admin Functions ****** //
   // Add a new shareholder
   function addShareHolder(address _shareholder) public onlyFundAdmin() {

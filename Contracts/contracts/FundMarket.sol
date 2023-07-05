@@ -4,8 +4,14 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./interfaces/IFundMarket.sol";
 import "./FundToken.sol";
 
-abstract contract FundMarket is IFundMarket, FundToken  {
-
+ contract FundMarket is FundToken  {
+  /**
+   * Constructior for deployment of the Market Fund
+   * @param wusdc_  Stable coin Address
+   * @param baseTokenPrice_  Base Token Price
+   * @param tokenName_ Name of the Fund token
+   * @param ticker_ Symbol of the fund token
+   */
   constructor(
     address wusdc_,
     uint256 baseTokenPrice_, 
