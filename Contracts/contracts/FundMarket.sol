@@ -55,6 +55,8 @@ import "./FundToken.sol";
     transactionDetails[txId] = TransactionDetails(TransctionType.PURCHASE, _amount, _tokensToMint, timeStamp );
     // Add Transacton to the user Transactions
     userTransactions[msg.sender].push(txId);
+    //Update user in Holding set
+    _updateUserInHoldingSet(msg.sender);
     // Emits the event after the purchase
     emit FundPurchased(msg.sender,txId, _amount, _tokensToMint, timeStamp);
     // return _amount;
@@ -146,8 +148,8 @@ import "./FundToken.sol";
 
    function _processDividentForUser(address _account, int256 _rate, uint256 _price) private{
     // Calculate the divident amount
-     uint256 dividentAmount = SafeMath.mul(balanceOf(_account), uint256(abs(_rate)));
-     uint256 dividentShares = SafeMath.div(dividentAmount, _price);
+     uint256 dividentAmount = balanceOf(_account) *  uint256(abs(_rate));
+     uint256 dividentShares = dividentAmount/ _price;
      // IF the divident amount is > 0
      if(dividentShares > 0){
       // Distribute dividents

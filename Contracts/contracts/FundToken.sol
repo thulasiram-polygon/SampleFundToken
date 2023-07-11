@@ -119,10 +119,13 @@ abstract contract FundToken is ERC20, AccessControlEnumerable {
   // By default the deployer is the admin and fund admin
   constructor(  address wusdc_, string memory name_, string memory symbol_) ERC20(name_, symbol_) {
      WUSDC = wusdc_;
-    _setupRole(ADMIN_ROLE, msg.sender);
-    // Default fund admin is the deployer
-    _setupRole(FUND_ADMIN_ROLE, msg.sender);
-    FUND_ADMIN = msg.sender;
+     _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+     _setupRole(ADMIN_ROLE, msg.sender);
+     // Default fund admin is the deployer
+     FUND_ADMIN = msg.sender;
+     _setupRole(FUND_ADMIN_ROLE, msg.sender);
+  
+     _setRoleAdmin(SHAREHOLDER_ROLE, FUND_ADMIN_ROLE);
   }
 
   // ****** Admin Functions ****** //
@@ -134,6 +137,7 @@ abstract contract FundToken is ERC20, AccessControlEnumerable {
     revokeRole(FUND_ADMIN_ROLE, FUND_ADMIN);
     FUND_ADMIN = _newAdmin;
     grantRole(FUND_ADMIN_ROLE, _newAdmin);
+    _setRoleAdmin(SHAREHOLDER_ROLE, FUND_ADMIN_ROLE);
     
  
   }
