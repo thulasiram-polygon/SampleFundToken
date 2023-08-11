@@ -1,2 +1,3 @@
 # SampleFundToken
- 
+
+# ONLY WORKS WITH POLYGON MUMBAI TESTNET

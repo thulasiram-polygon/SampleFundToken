@@ -30,13 +30,15 @@ import "./FundToken.sol";
   function setBaseTokenPrice(uint256 _baseTokenPrice) public onlyFundAdmin() {
     baseTokenPrice = _baseTokenPrice;
   }
-
+ // For getting token amount for given WUSDC
+ // NOTE: We are multiplying with 10 ** 18 because we are using 18 decimals for WUSDC
   function getTokensAmountForGivenWUSDC(uint256 _amount) public view returns(uint256){
-       return _amount / baseTokenPrice;
+       return (_amount / baseTokenPrice) * 10 **18;
   }
-
+  // For getting WUSDC amount for given token amount
+  // NOTE: We are dividing with 10 ** 18 because we are using 18 decimals for WUSDC
   function getWUSDCAmountForGivenFundBalance(uint256 _fundTokenAmount) public view returns(uint256){
-    return _fundTokenAmount * baseTokenPrice;
+    return (_fundTokenAmount * baseTokenPrice) / 10 **18;
   }
 
   function purchaseFund(uint256 _amount) public onlyShareHolder onlyHigherThenZero(_amount) returns (uint256){
@@ -79,7 +81,7 @@ import "./FundToken.sol";
     // Update user in the SharesholderWithHolding Set
     _updateUserInHoldingSet(msg.sender);
     // Transfer WUSDC back to the user
-    IERC20(WUSDC).transfer(msg.sender, wusdcAmount);
+    require(IERC20(WUSDC).transfer(msg.sender, wusdcAmount), ERROR_TRANSFER_FAILED);
      uint256 timeStamp = block.timestamp;
 
     // Add Transaction to the storage 
@@ -112,7 +114,7 @@ import "./FundToken.sol";
     // Update user in the SharesholderWithHolding Set
     _updateUserInHoldingSet(msg.sender);
     // Transfer WUSDC back to the user
-    IERC20(WUSDC).transfer(msg.sender, wusdcAmount);
+    require(IERC20(WUSDC).transfer(msg.sender, wusdcAmount), ERROR_TRANSFER_FAILED);
      uint256 timeStamp = block.timestamp;
     // Add Transaction to the storage 
     transactionDetails[txId] = TransactionDetails(TransctionType.FULL_LIQUIDATION, wusdcAmount, userFundBalance, timeStamp);
